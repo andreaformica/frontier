@@ -41,7 +41,7 @@
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
             driverClassName="oracle.jdbc.driver.OracleDriver"
             url="jdbc:oracle:thin:@ATONR_ADG"
-            minIdle="0" initialSize="0"
+            minIdle="10" initialSize="10"
             maxIdle="50" maxActive="50"
             maxWait="-1" maxAge="300000"
             validationQuery="SELECT 1 FROM DUAL"
