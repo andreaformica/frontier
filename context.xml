@@ -43,6 +43,6 @@
             maxWait="-1" maxAge="300000"
             minEvictableIdleTimeMillis="60000" timeBetweenEvictionRunsMillis="20000"
             removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
-            username="${DB_USERNAME}" password="${DB_PASSWORD}"
+            username="${env.DB_USERNAME}" password="${env.DB_PASSWORD}"
     />
 </Context>

@@ -17,7 +17,7 @@
 
     <servlet-mapping>
         <servlet-name>atlr</servlet-name>
-        <url-pattern>/atlr/Frontier/*</url-pattern>
+        <url-pattern>/Frontier/*</url-pattern>
     </servlet-mapping>
 
     <resource-ref>
