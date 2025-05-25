@@ -28,14 +28,16 @@
     <!--
     <Manager pathname="" />
     -->
-
+<!--
+    url="jdbc:oracle:thin:@ATONR_FRONTIER_ADG"
+ -->
     <Resource
             auth="Container"
             name="jdbc/atlr"
             type="javax.sql.DataSource"
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-            url="jdbc:oracle:thin:@ATONR_FRONTIER_ADG"
             driverClassName="oracle.jdbc.driver.OracleDriver"
+            url="jdbc:oracle:thin:@ATONR_ADG"
             minIdle="0" initialSize="0"
             maxIdle="50" maxActive="50"
             maxWait="-1" maxAge="300000"
