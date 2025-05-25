@@ -22,7 +22,7 @@ stages:
 package_cern_application:
   stage: package_application
   environment: cern
-  image: registry.cern.ch/docker.io/eclipse-temurin:23-alpine
+  image: registry.cern.ch/docker.io/eclipse-temurin:17-alpine
   script:
    - ./gradlew clean build -x test
   allow_failure: false

@@ -44,6 +44,6 @@
             validationQuery="SELECT 1 FROM DUAL"
             minEvictableIdleTimeMillis="60000" timeBetweenEvictionRunsMillis="20000"
             removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
-            username="${env.DB_USERNAME}" password="${env.DB_PASSWORD}"
+            username="ATLAS_FRONTIER_READER" password="${env.DB_PASSWORD}"
     />
 </Context>
