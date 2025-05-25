@@ -31,6 +31,9 @@
 <!--
     url="jdbc:oracle:thin:@ATONR_FRONTIER_ADG"
  -->
+    <Environment name="dbPassword"
+                 value="${env.DB_PASSWORD}"
+                 type="java.lang.String" />
     <Resource
             auth="Container"
             name="jdbc/atlr"
@@ -44,6 +47,6 @@
             validationQuery="SELECT 1 FROM DUAL"
             minEvictableIdleTimeMillis="60000" timeBetweenEvictionRunsMillis="20000"
             removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
-            username="ATLAS_FRONTIER_READER" password="$${env.DB_PASSWORD}"
+            username="ATLAS_FRONTIER_READER" password="${dbPassword}"
     />
 </Context>
