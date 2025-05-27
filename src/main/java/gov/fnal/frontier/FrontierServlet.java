@@ -135,15 +135,6 @@ public final class FrontierServlet extends HttpServlet
     return msg;
   }
 
- protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-      try {
-          response.getWriter().write("Servlet is working!");
-      }
-      catch (IOException e) {
-          throw new RuntimeException(e);
-      }
- }
-
   public void service(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException
    {
     if(Frontier.getHighVerbosity())Frontier.Log("FrontierServlet.java:service()");
