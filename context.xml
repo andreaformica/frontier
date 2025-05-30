@@ -31,9 +31,6 @@
 <!--
     url="jdbc:oracle:thin:@ATONR_FRONTIER_ADG"
  -->
-    <Environment name="dbPassword"
-                 value="${env.DB_PASSWORD}"
-                 type="java.lang.String" />
     <Resource
             auth="Container"
             name="jdbc/atlr"

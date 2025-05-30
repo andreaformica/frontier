@@ -1,6 +1,6 @@
 variables:
     IMAGE: frontier-service
-    VERSION: '1.0'
+    VERSION: '1.11'
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 # Make the gradle wrapper executable. This essentially downloads a copy of

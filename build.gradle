@@ -3,12 +3,12 @@ plugins {
     id 'war'
 }
 
-group = 'com.example'
-version = '1.0'
+group = 'gov.fnal'
+version = '3.0'
 
 ext {
     appName = 'Frontier'
-    appVersion = '1.0'
+    appVersion = '3.0'
     catalinaHome = System.getenv('CATALINA_HOME') ?: '/path/to/tomcat'
 }
 
