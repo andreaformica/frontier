@@ -47,8 +47,8 @@ public class FrontierRequestFilter implements Filter {
         } finally {
             // Log processing time
             long duration = System.currentTimeMillis() - startTime;
-            log.debug("Filter request: {} Completed in {} ms", Instant.now(), duration);
             MDC.put("duration", String.valueOf(duration));
+            log.debug("Filter request: {} Completed in {} ms", Instant.now(), duration);
             // Optionally, you can log the response status if needed
 
             MDC.clear();

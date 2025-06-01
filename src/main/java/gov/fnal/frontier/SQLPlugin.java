@@ -101,6 +101,7 @@ public class SQLPlugin implements FrontierPlugin {
 
         query = new String(bsql, "US-ASCII");
         queryLower = query.toLowerCase();
+        MDC.put("query", query);
         Frontier.Log("SQL [" + query + "]");
     }
 
@@ -163,7 +164,6 @@ public class SQLPlugin implements FrontierPlugin {
 			      /* 1000 & 10000 are slightly faster but cause
 			         executeQuery to abort with OutOfMemoryError
 				 for some queries with larger rows. */
-            MDC.put("query", stmt.toString());
             long timestamp = (new Date()).getTime();
             rs = stmt.executeQuery();
             mgr.cancelKeepAlive();
@@ -214,6 +214,9 @@ public class SQLPlugin implements FrontierPlugin {
             timestamp2 = (new Date()).getTime();
             Frontier.Log("DB data transferred msecs=" + (timestamp2 - timestamp));
             MDC.put("dbDataTime", String.valueOf(timestamp2 - timestamp));
+            MDC.put("dbError", "none");
+            MDC.put("dbRows", String.valueOf(row_count));
+
         }
         catch (Exception e) {
             if (queryTableNames != null) {
@@ -221,6 +224,7 @@ public class SQLPlugin implements FrontierPlugin {
                 Exception newe = new Exception("While querying " + queryTableNames.toString() + ": "
                         + e.getMessage().trim());
                 newe.setStackTrace(e.getStackTrace());
+                MDC.put("dbError", e.getMessage().trim());
                 throw newe;
             }
             else
