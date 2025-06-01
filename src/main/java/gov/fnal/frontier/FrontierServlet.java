@@ -56,6 +56,8 @@ public final class FrontierServlet extends HttpServlet {
             // Initialize JUL-to-SLF4J bridge
             SLF4JBridgeHandler.removeHandlersForRootLogger();
             SLF4JBridgeHandler.install();
+            java.util.logging.Logger.getLogger("BridgeTest")
+                    .info("JUL-to-SLF4J bridge is working");
 
             Frontier.Log("Frontier.init() DONE:");
             Frontier.init();
