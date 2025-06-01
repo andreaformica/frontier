@@ -7,6 +7,21 @@
             <level>DEBUG</level>
         </filter>
     </appender>
+    <appender name="fileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/usr/local/tomcat/logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/usr/local/tomcat/logs/application.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+
     <appender name="consoleFilterAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>%d %-5level [%thread] %logger{35} - %msg %mdc %n</Pattern>
@@ -48,5 +63,6 @@
 
     <root level="DEBUG">
         <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
     </root>
 </configuration>
