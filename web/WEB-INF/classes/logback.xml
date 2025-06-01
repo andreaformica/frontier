@@ -1,4 +1,4 @@
-<configuration>
+<configuration scan="true" scanPeriod="60 seconds">
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>%d %-5level [%thread] %logger{35} - %msg %n</Pattern>
