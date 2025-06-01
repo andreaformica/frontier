@@ -6,7 +6,7 @@ plugins {
 group = 'gov.fnal'
 version = '3.0'
 // Set java version for compilation compatibility
-sourceCompatibility = '21'
+// sourceCompatibility = '21'
 ext {
     appName = 'Frontier'
     appVersion = '3.0'
