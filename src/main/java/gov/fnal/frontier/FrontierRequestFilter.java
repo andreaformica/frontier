@@ -29,7 +29,7 @@ public class FrontierRequestFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         long startTime = System.currentTimeMillis();
-        MDC.put("token", "frontier-v4f");
+        MDC.put("token", "frontier");
         MDC.put("requestURI", httpRequest.getRequestURI());
         MDC.put("requestQuery", httpRequest.getQueryString() != null ?
                 "?" + httpRequest.getQueryString() :

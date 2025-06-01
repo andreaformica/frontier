@@ -33,7 +33,7 @@
     </appender>
 
     <appender name="stashProfileAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>crest.atlas-ml.org:5959</destination>
+        <destination>frontier.atlas-ml.org:5958</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <fieldNames>
                 <timestamp>[ignore]</timestamp>
@@ -58,7 +58,7 @@
     <logger name="org.apache.catalina" level="TRACE"/>
     <logger name="gov.fnal.frontier" level="TRACE"/>
     <logger name="gov.fnal.frontier.FrontierRequestFilter" level="INFO" additivity="true">
-        <!-- <appender-ref ref="stashProfileAppender" /> -->
+        <appender-ref ref="stashProfileAppender" />
         <appender-ref ref="consoleFilterAppender" />
     </logger>
 
