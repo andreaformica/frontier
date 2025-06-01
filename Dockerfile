@@ -9,5 +9,10 @@ COPY logging.properties /usr/local/tomcat/conf/logging.properties
 ## unzip ./build/dist/Frontier.war WEB-INF/lib/ojdbc11-21.11.0.0.jar -d /tmp/
 ## cp /tmp/WEB-INF/lib/ojdbc11-21.11.0.0.jar /usr/local/tomcat/lib/
 EXPOSE 8080
-#CMD ["catalina.sh", "run"]
-ENTRYPOINT ["sh", "-c", "catalina.sh run > /usr/local/tomcat/logs/catalina.out 2>&1"]
+
+# Environment setup
+ENV CATALINA_OPTS="-Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties"
+
+# Run without output redirection to properly capture all streams
+CMD ["catalina.sh", "run"]
+# ENTRYPOINT ["sh", "-c", "catalina.sh run > /usr/local/tomcat/logs/catalina.out 2>&1"]
