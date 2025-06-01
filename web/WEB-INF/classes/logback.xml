@@ -1,13 +1,50 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n %mdc</pattern>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %n</Pattern>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
     </appender>
+    <appender name="consoleFilterAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %mdc %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="stashProfileAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>crest.atlas-ml.org:5959</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>[ignore]</timestamp>
+                <message>msg</message>
+                <thread>[ignore]</thread>
+                <levelValue>[ignore]</levelValue>
+                <logger>logger</logger>
+                <version>[ignore]</version>
+            </fieldNames>
+        </encoder>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <writeTimeout>10 seconds</writeTimeout>
+        <reconnectionDelay>30 seconds</reconnectionDelay>
+        <queueSize>10000</queueSize>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
 
     <!-- Set logging levels -->
     <logger name="org.apache.catalina" level="TRACE"/>
     <logger name="gov.fnal.frontier" level="TRACE"/>
+    <logger name="gov.fnal.frontier.FrontierRequestFilter" level="INFO" additivity="true">
+        <!-- <appender-ref ref="stashProfileAppender" /> -->
+        <appender-ref ref="consoleFilterAppender" />
+    </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
