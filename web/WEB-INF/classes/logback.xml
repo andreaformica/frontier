@@ -46,7 +46,7 @@
         <appender-ref ref="consoleFilterAppender" />
     </logger>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+    <root level="DEBUG">
+        <appender-ref ref="consoleAppender"/>
     </root>
 </configuration>
