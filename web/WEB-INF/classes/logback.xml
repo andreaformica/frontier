@@ -6,6 +6,7 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
+        <immediateFlush>true</immediateFlush>
     </appender>
     <appender name="fileAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
