@@ -12,8 +12,8 @@
 package gov.fnal.frontier;
 
 import java.util.*;
-import javax.servlet.http.*;
 import gov.fnal.frontier.fdo.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 public class Command 

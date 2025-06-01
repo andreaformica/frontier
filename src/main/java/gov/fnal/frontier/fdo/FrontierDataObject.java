@@ -15,8 +15,7 @@
 
 package gov.fnal.frontier.fdo;
 
-import java.io.*;
-import javax.servlet.ServletOutputStream;
+import jakarta.servlet.ServletOutputStream;
 
 public interface FrontierDataObject
  {

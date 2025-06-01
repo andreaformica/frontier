@@ -12,8 +12,10 @@
 package gov.fnal.frontier;
 
 import gov.fnal.frontier.codec.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.*;
 import java.util.regex.*;
 import java.text.SimpleDateFormat;
@@ -281,7 +283,7 @@ public final class Frontier
    }
 
 
-  public Frontier(HttpServletRequest req) throws Exception 
+  public Frontier(HttpServletRequest req) throws Exception
    {
     if(!initialized) init();
 
@@ -382,7 +384,7 @@ public final class Frontier
     return last_modified;
    }
 
-  public long getLastModified(ServletOutputStream out,long if_modified_since) throws Exception
+  public long getLastModified(ServletOutputStream out, long if_modified_since) throws Exception
    {
     if(highVerbosity)Frontier.Log("Frontier.java:getLastModified()");
     long last_modified=0;

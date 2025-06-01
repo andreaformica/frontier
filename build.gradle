@@ -16,13 +16,23 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
+configurations.all {
+    exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
+}
 
+dependencies {
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.7'
+    implementation('ch.qos.logback:logback-classic:1.4.7') {
+        exclude module: 'module-info'
+    }
+    implementation 'org.slf4j:jul-to-slf4j:2.0.9'
     // Oracle JDBC driver (include in WAR)
     implementation 'com.oracle.database.jdbc:ojdbc11:21.11.0.0'  // Explicit version
-
+    // Jakarta Servlet API (Tomcat 11 uses Jakarta EE 10)
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     // Add dependencies here, e.g., servlet API
-    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    // providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
     testImplementation 'junit:junit:4.13.2'
 }
 
@@ -40,6 +50,7 @@ sourceSets {
 }
 
 war {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     archiveBaseName.set(appName)
     archiveVersion.set('')
     destinationDirectory.set(file("$buildDir/dist"))
