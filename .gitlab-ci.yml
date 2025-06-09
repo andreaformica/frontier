@@ -64,11 +64,13 @@ build_rpm_job:
   script:
     - cd /tmp/rpms/frontier-tomcat
     - pushd ./scripts; ../../scripts/rpmbuild_.sh; popd
-    - cp /tmp/rpms/frontier-tomcat/RPMS/noarch/frontier-tomcat-11.0.7_4.0-1.noarch.rpm $RPM_OUTPUT_DIR
+    - mkdir -p $RPM_OUTPUT_DIR
+    - cp -rv $RPM_TMP_DIR/{RPMS,SRPMS} $RPM_OUTPUT_DIR/
   allow_failure: false
   artifacts:
     paths:
-      - rpms/frontier-tomcat-11.0.7_4.0-1.noarch.rpm
+      - rpms/RPMS/  # Now these paths are relative to $CI_PROJECT_DIR
+      - rpms/SRPMS/
     expire_in: 1 week
 
 
