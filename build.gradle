@@ -1,14 +1,37 @@
 plugins {
     id 'java'
     id 'war'
+    id 'maven-publish'
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            // from components.java
+            from components.web
+        }
+    }
+    repositories {
+        maven {
+            url "https://gitlab.cern.ch/api/v4/projects/209928/packages/maven"
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = System.getenv("GITLAB_TOKEN") ?: project.findProperty("gitLabPrivateToken")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
 }
 
 group = 'gov.fnal'
-version = '3.0'
-
+version = '4.0'
+// Set java version for compilation compatibility
+// sourceCompatibility = '21'
 ext {
     appName = 'Frontier'
-    appVersion = '3.0'
+    appVersion = '4.0'
     catalinaHome = System.getenv('CATALINA_HOME') ?: '/path/to/tomcat'
 }
 
@@ -16,13 +39,28 @@ repositories {
     mavenCentral()
 }
 
+configurations.all {
+    exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
+}
+
 dependencies {
+    // Logging
+    implementation('ch.qos.logback:logback-classic:1.4.7') {
+        exclude module: 'module-info'
+    }
+    //implementation 'org.slf4j:jul-to-slf4j:2.0.9'
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.7'
+    implementation 'org.slf4j:jul-to-slf4j:2.0.7'  // For the bridge
 
     // Oracle JDBC driver (include in WAR)
     implementation 'com.oracle.database.jdbc:ojdbc11:21.11.0.0'  // Explicit version
-
+    // Logstash
+    runtimeOnly 'net.logstash.logback:logstash-logback-encoder:7.4'
+    // Jakarta Servlet API (Tomcat 11 uses Jakarta EE 10)
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     // Add dependencies here, e.g., servlet API
-    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    // providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
     testImplementation 'junit:junit:4.13.2'
 }
 
@@ -40,6 +78,7 @@ sourceSets {
 }
 
 war {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     archiveBaseName.set(appName)
     archiveVersion.set('')
     destinationDirectory.set(file("$buildDir/dist"))

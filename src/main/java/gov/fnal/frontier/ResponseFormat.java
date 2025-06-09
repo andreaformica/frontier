@@ -11,8 +11,8 @@
 
 package gov.fnal.frontier;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletOutputStream;
+
 import java.util.*;
 import java.io.*;
 
@@ -64,7 +64,7 @@ public class ResponseFormat
    }
    
 
-  static void begin(ServletOutputStream out,String version,String xmlversion) throws Exception
+  static void begin(ServletOutputStream out, String version, String xmlversion) throws Exception
    {
     out.print("<?xml version=\"1.0\" encoding=\"US-ASCII\"?>\n");
     out.print("<!DOCTYPE frontier SYSTEM \"http://frontier.fnal.gov/frontier.dtd\">\n");

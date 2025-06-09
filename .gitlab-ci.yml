@@ -18,10 +18,10 @@ include:
 stages:
  - package_application
  - push
+ - build_rpm
 
 package_cern_application:
   stage: package_application
-  environment: cern
   image: registry.cern.ch/docker.io/eclipse-temurin:17-alpine
   script:
    - ./gradlew clean build -x test
@@ -48,5 +48,29 @@ build_container_job:
     CONTEXT_DIR: ""
     PUSH_IMAGE: "true"
     DOCKER_FILE_NAME: "Dockerfile"
+
+build_rpm_job:
+  stage: build_rpm
+  image: registry.cern.ch/docker.io/almalinux:9
+  variables:
+    RPM_TMP_DIR: "/tmp/rpms"  # Build in /tmp
+    RPM_OUTPUT_DIR: "$CI_PROJECT_DIR/rpms/frontier-tomcat"  # Final output dir
+  before_script:
+      - dnf upgrade -y --refresh && dnf install -y rpm-build rpmdevtools findutils git wget rpm-sign && dnf clean all
+      - cp ./package-rpm/get-rpms.sh /tmp/get-rpms.sh
+      - chmod +x /tmp/get-rpms.sh
+      - /tmp/get-rpms.sh
+      - cp ./package-rpm/frontier-tomcat.spec /tmp/rpms/frontier-tomcat/SPECS/frontier-tomcat.spec
+  script:
+    - cd /tmp/rpms/frontier-tomcat
+    - pushd ./scripts; ../../scripts/rpmbuild_.sh; popd
+    - mkdir -p $RPM_OUTPUT_DIR
+    - cp -rv $RPM_TMP_DIR/frontier-tomcat/{RPMS,SRPMS} $RPM_OUTPUT_DIR/
+  allow_failure: false
+  artifacts:
+    paths:
+      - rpms/frontier-tomcat/RPMS/  # Now these paths are relative to $CI_PROJECT_DIR
+      - rpms/frontier-tomcat/SRPMS/
+    expire_in: 1 week
 
 

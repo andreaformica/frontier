@@ -1,0 +1,69 @@
+<configuration scan="true" scanPeriod="60 seconds">
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <immediateFlush>true</immediateFlush>
+    </appender>
+    <appender name="fileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/usr/local/tomcat/logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/usr/local/tomcat/logs/application.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+
+    <appender name="consoleFilterAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %-5level [%thread] %logger{35} - %msg %mdc %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="stashProfileAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>frontier.atlas-ml.org:5958</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>[ignore]</timestamp>
+                <message>msg</message>
+                <thread>[ignore]</thread>
+                <levelValue>[ignore]</levelValue>
+                <logger>logger</logger>
+                <version>[ignore]</version>
+            </fieldNames>
+        </encoder>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <writeTimeout>10 seconds</writeTimeout>
+        <reconnectionDelay>30 seconds</reconnectionDelay>
+        <queueSize>10000</queueSize>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+
+    <!-- Set logging levels -->
+    <logger name="org.apache.catalina" level="TRACE"/>
+    <logger name="gov.fnal.frontier" level="TRACE"/>
+    <logger name="gov.fnal.frontier.FrontierRequestFilter" level="INFO" additivity="true">
+        <appender-ref ref="stashProfileAppender" />
+        <appender-ref ref="consoleFilterAppender" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </root>
+</configuration>
