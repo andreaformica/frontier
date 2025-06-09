@@ -1,15 +1,37 @@
 plugins {
     id 'java'
     id 'war'
+    id 'maven-publish'
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            // from components.java
+            from components.web
+        }
+    }
+    repositories {
+        maven {
+            url "https://gitlab.cern.ch/api/v4/projects/209928/packages/maven"
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = gitLabPrivateToken // the variable resides in $GRADLE_USER_HOME/gradle.properties
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
 }
 
 group = 'gov.fnal'
-version = '3.0'
+version = '4.0'
 // Set java version for compilation compatibility
 // sourceCompatibility = '21'
 ext {
     appName = 'Frontier'
-    appVersion = '3.0'
+    appVersion = '4.0'
     catalinaHome = System.getenv('CATALINA_HOME') ?: '/path/to/tomcat'
 }
 

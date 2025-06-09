@@ -18,10 +18,10 @@ include:
 stages:
  - package_application
  - push
+ - build_rpm
 
 package_cern_application:
   stage: package_application
-  environment: cern
   image: registry.cern.ch/docker.io/eclipse-temurin:17-alpine
   script:
    - ./gradlew clean build -x test
@@ -49,4 +49,19 @@ build_container_job:
     PUSH_IMAGE: "true"
     DOCKER_FILE_NAME: "Dockerfile"
 
+build_rpm_job:
+  stage: build_rpm
+  image: registry.cern.ch/docker.io/almalinux:9
+  before_script:
+      - cp ./package-rpm/get-rpms.sh /tmp/get-rpms.sh
+      - chmod +x /tmp/get-rpms.sh
+      - /tmp/get-rpms.sh
+      - cp ./package-rpm/frontier-tomcat.spec /tmp/rpms/frontier-tomcat/SPECS/frontier-tomcat.spec
+  script:
+    - cd /tmp/rpms/frontier-tomcat
+    - pushd ./scripts; ../../scripts/rpmbuild_.sh; popd
+  allow_failure: false
+  artifacts:
+    paths:
+      - /tmp/rpms/frontier-tomcat/RPMS/noarch/frontier-tomcat-11.0.7_4.0-1.noarch.rpm
 
