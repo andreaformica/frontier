@@ -53,7 +53,7 @@ build_rpm_job:
   stage: build_rpm
   image: registry.cern.ch/docker.io/almalinux:9
   before_script:
-      - dnf upgrade -y --refresh && dnf install -y rpm-build rpmdevtools findutils git && dnf clean all
+      - dnf upgrade -y --refresh && dnf install -y rpm-build rpmdevtools findutils git wget && dnf clean all
       - cp ./package-rpm/get-rpms.sh /tmp/get-rpms.sh
       - chmod +x /tmp/get-rpms.sh
       - /tmp/get-rpms.sh
