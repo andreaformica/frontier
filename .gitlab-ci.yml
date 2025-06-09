@@ -52,6 +52,9 @@ build_container_job:
 build_rpm_job:
   stage: build_rpm
   image: registry.cern.ch/docker.io/almalinux:9
+  variables:
+    RPM_TMP_DIR: "/tmp/rpms"  # Build in /tmp
+    RPM_OUTPUT_DIR: "$CI_PROJECT_DIR/rpms"  # Final output dir
   before_script:
       - dnf upgrade -y --refresh && dnf install -y rpm-build rpmdevtools findutils git wget && dnf clean all
       - cp ./package-rpm/get-rpms.sh /tmp/get-rpms.sh
@@ -61,8 +64,11 @@ build_rpm_job:
   script:
     - cd /tmp/rpms/frontier-tomcat
     - pushd ./scripts; ../../scripts/rpmbuild_.sh; popd
+    - cp /tmp/rpms/frontier-tomcat/RPMS/noarch/frontier-tomcat-11.0.7_4.0-1.noarch.rpm $RPM_OUTPUT_DIR
   allow_failure: false
   artifacts:
     paths:
-      - /tmp/rpms/frontier-tomcat/RPMS/noarch/frontier-tomcat-11.0.7_4.0-1.noarch.rpm
+      - rpms/frontier-tomcat-11.0.7_4.0-1.noarch.rpm
+    expire_in: 1 week
+
 
