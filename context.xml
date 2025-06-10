@@ -28,22 +28,24 @@
     <!--
     <Manager pathname="" />
     -->
-<!--
-    url="jdbc:oracle:thin:@ATONR_FRONTIER_ADG"
- -->
+    <!-- Parameters examples: you should adapt this depending on your deployment -->
+    <!-- DB_USERNAME = ATLAS_FRONTIER_READER-->
+    <!-- DB_URL = jdbc:oracle:thin:@localhost:1521:xe
+         or some Oracle tnsnames alias :
+         e.g. jdbc:oracle:thin:@ATONR_FRONTIER_ADG (atlas) -->
+    -->
     <Resource
             auth="Container"
             name="jdbc/atlr"
             type="javax.sql.DataSource"
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            url="${DB_URL}"
             driverClassName="oracle.jdbc.driver.OracleDriver"
-            url="jdbc:oracle:thin:@ATONR_ADG"
-            minIdle="10" initialSize="10"
+            minIdle="0" initialSize="0"
             maxIdle="50" maxActive="50"
             maxWait="-1" maxAge="300000"
-            validationQuery="SELECT 1 FROM DUAL"
             minEvictableIdleTimeMillis="60000" timeBetweenEvictionRunsMillis="20000"
             removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
-            username="ATLAS_FRONTIER_READER" password="${dbPassword}"
+            username="${DB_USERNAME}" password="${DB_PASSWORD}"
     />
 </Context>

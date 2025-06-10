@@ -93,9 +93,10 @@ public class DbConnectionMgr
    }
 
   private static DbConnectionMgr instance=null;
-  private static Boolean mutex=Boolean.TRUE;
+  private static final Object mutex= new Object();
   private ReentrantLock acquireLock=new ReentrantLock(true);
-  private Boolean counterMutex=Boolean.TRUE;
+  //private final Boolean counterMutex=Boolean.TRUE;
+  private final Object counterMutex= new Object();
   private int numAcquiredConnections=0;
   // Could use a list instead of a HashMap because there will be only
   //  a small number of entries, but a hashed interface is convenient.
