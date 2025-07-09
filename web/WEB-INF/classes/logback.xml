@@ -42,7 +42,13 @@
                 <levelValue>[ignore]</levelValue>
                 <logger>logger</logger>
                 <version>[ignore]</version>
+                <mdc>mdc</mdc>
             </fieldNames>
+            <includeMdc>true</includeMdc>
+            <flattenMdc>true</flattenMdc>
+            <maxLength>65536</maxLength>
+            <!-- Optional: include specific context fields -->
+            <includeContext>true</includeContext>
         </encoder>
         <keepAliveDuration>5 minutes</keepAliveDuration>
         <writeTimeout>10 seconds</writeTimeout>

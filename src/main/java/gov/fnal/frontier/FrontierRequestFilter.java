@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 import java.time.Instant;
+
+import net.logstash.logback.marker.Markers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -47,8 +49,18 @@ public class FrontierRequestFilter implements Filter {
             // Log processing time
             long duration = System.currentTimeMillis() - startTime;
             MDC.put("duration", String.valueOf(duration));
+            String queryTimeMillisec = MDC.get("queryTime");
+            String dbRow = MDC.get("dbRows");
+            String dbDataTime = MDC.get("dbDataTime");
             log.info("Filter request completed! ");
             // Optionally, you can log the response status if needed
+            // Better approach using LogstashMarkers:
+            log.info(Markers.append("durationMillisec", duration)
+                            .and(Markers.append("queryTimeMillisec",
+                                    Long.valueOf(queryTimeMillisec)))
+                            .and(Markers.append("dbRows", Long.valueOf(dbRow)))
+                            .and(Markers.append("dbDataTime", Long.valueOf(dbDataTime))),
+                    "Message with typed fields");
             MDC.clear();
         }
     }

@@ -48,6 +48,9 @@ dependencies {
     implementation('ch.qos.logback:logback-classic:1.4.7') {
         exclude module: 'module-info'
     }
+    // If you're using logstash-logback-encoder
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+
     //implementation 'org.slf4j:jul-to-slf4j:2.0.9'
     // Logging
     implementation 'org.slf4j:slf4j-api:2.0.7'
@@ -136,20 +139,26 @@ tasks.test {
 }
 
 tasks.register('dist', Copy) {
-    dependsOn 'classes'
+    dependsOn 'war'  // Make sure WAR task completes first
     from 'docs'
-    into distDir.dir('docs')
+    into "${layout.buildDirectory.get()}/dist/docs"
 
-    doLast {
-        def warFile = war.archiveFile.get().asFile
-        warFile.copyTo(distDir.file("${appName}.war").get().asFile)
+    // Explicit WAR file copy
+    from(war.archiveFile) {
+        into "${layout.buildDirectory.get()}/dist"
+        rename { "${war.archiveBaseName.get()}.war" }
     }
 }
 
 tasks.register('localinstall', Copy) {
     dependsOn 'dist'
-    from distDir.file("${appName}.war")
-    into file("$catalinaHome/webapps")
+    from "${layout.buildDirectory.get()}/dist/${war.archiveBaseName.get()}.war"
+    into "${catalinaHome}/webapps"
+
+    doLast {
+        def installedWar = new File("${catalinaHome}/webapps/${war.archiveBaseName.get()}.war")
+        logger.lifecycle("Installed WAR (${installedWar.length()} bytes) to ${installedWar}")
+    }
 }
 
 tasks.register('localuninstall', Delete) {
